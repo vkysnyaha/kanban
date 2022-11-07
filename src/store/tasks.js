@@ -2,37 +2,70 @@ import { createStore } from 'vuex'
 
 export default createStore({
     state: {
-        requested: [],
-        inProgress: [],
-        inReview: [],
-        completed: []
+        tasks: [
+            {
+                title: 'Сделать канбан',
+                status: 'inProgress',
+                priority: 'High',
+                id: 1,
+                dataStart: '02.11',
+                dataEnd: '25.11'
+            },
+            {
+                title: 'Покушать',
+                status: 'requested',
+                priority: 'Triage',
+                id: 2,
+                dataStart: '05.11',
+                dataEnd: '31.12'
+            },
+            {
+                title: 'Поспать',
+                status: 'requested',
+                priority: 'Triage',
+                id: 3,
+                dataStart: '05.11',
+                dataEnd: '31.12'
+            },
+            {
+                title: 'Сделать сайт с фильмами',
+                status: 'completed',
+                priority: 'High',
+                id: 4,
+                dataStart: '13.10',
+                dataEnd: '30.10'
+            },
+        ]
     },
 
     mutations: {
-        PUSH_REQUESTED(state, task) {
-            state.requested.push(task)
+        PUSH_TASK(state, task) {
+            state.tasks = [...state.tasks, task]
         },
-        DELETE_REQUESTED(state, task) {
-            state.requested = state.requested.filter((taskRequested) => {taskRequested != task})
+        CHANGE_TASK(state, task) {
+            state.tasks = state.tasks.map((taskState) => {
+                if (taskState.id === task.id) {
+                    return task
+                }
+                return taskState
+            })
         },
-        PUSH_IN_PROGRESS(state, task) {
-            state.inProgress.push(task)
+        CHANGE_STATUS_TO_REQUESTED(state, id) {
+            state.tasks = state.tasks.map((task) => task.id === id ? {...task, status: 'requested', priority: 'Triage'} : task)
         },
-        DELETE_PROGRESS(state, task) {
-            state.inProgress = state.inProgress.filter((taskInProgress) => {taskInProgress != task})
+        CHANGE_STATUS_TO_IN_PROGRESS(state, id) {
+            state.tasks = state.tasks.map((task) => task.id === id ? {...task, status: 'inProgress'} : task)
         },
-        PUSH_IN_REVIEW(state, task) {
-            state.inReview.push(task)
+        CHANGE_STATUS_TO_IN_REVIEW(state, id) {
+            state.tasks = state.tasks.map((task) => task.id === id ? {...task, status: 'inReview'} : task)
         },
-        DELETE_IN_REVIEW(state, task) {
-            state.inReview = state.inReview.filter((taskInReview) => {taskInReview != task})
+        CHANGE_STATUS_TO_COMPLETED(state, id) {
+            state.tasks = state.tasks.map((task) => task.id === id ? {...task, status: 'completed'} : task)
         },
-        PUSH_COMPLETED(state, task) {
-            state.completed.push(task)
-        },
-        DELETE_COMPLETED(state, task) {
-            state.completed = state.completed.filter((taskCompleted) => {taskCompleted != task})
-        },
+        DELETE_TASK(state, id) {
+            state.tasks = state.tasks.filter((task) => task.id != id)
+        }
+
     },
 
     actions: {
@@ -40,16 +73,16 @@ export default createStore({
     
     getters: {
         GET_REQUESTED(state) {
-            return state.requested
+            return state.tasks.filter((task) => task.status === 'requested')
         },
         GET_IN_PROGRESS(state) {
-            return state.inProgress
+            return state.tasks.filter((task) => task.status === 'inProgress')
         },
         GET_IN_REVIEW(state) {
-            return state.inReview
+            return state.tasks.filter((task) => task.status === 'inReview')
         },
         GET_COMPLETED(state) {
-            return state.completed
+            return state.tasks.filter((task) => task.status === 'completed')
         },
     }
 })

@@ -11,6 +11,7 @@ import Board from '@/components/Board.vue'
 
 export default {
   name: 'App',
+
   components: {
     Header,
     Board
@@ -18,8 +19,10 @@ export default {
 }
 </script>
 
-<style lang='sass' scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap')
-.wrapper
-  font-family: 'Inter', sans-serif
+<style  scoped>
+@import url('/src/assets/reset.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+.wrapper {
+  font-family: 'Josefin Sans', sans-serif
+}
 </style>
